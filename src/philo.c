@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:01:30 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/04 16:31:36 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/07 16:37:37 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,16 @@ int	error(int err)
 	}
 	if (err == 1)
 		write(2, "Opération non autorisée\n", 27);
+	if (err == 3)
+		write(2, "Aucun processus de ce type\n", 28);
 	if (err == 5)
 		write(2, "Erreur d'E/S\n", 13);
 	if (err == 11)
 		write(2, "Erreur mémoire\n", 16);
 	if (err == 22)
 		write(2, "Argument(s) non valide\n", 24);
+	if (err == 36)
+		write(2, "Un interblocage des ressources se produirait.\n", 47);
 	return (err);
 }
 
@@ -36,12 +40,12 @@ int	main(int ac, char **av)
 	int			err;
 
 	err = 0;
-	if (ac != 5)
+	if (ac != 6)
 		return (error(5));
-	err = parsing_fill(av, &law);
+	err = parsing_fill(&av[1], &law);
 	if (err)
 		return (error(err));
-	return (philo(law));
+	return (error(philo(law)));
 }
 
 int	philo(law law)
@@ -55,6 +59,7 @@ int	philo(law law)
 	if (secure)
 		return (freeteuse(secure, forks, phils));
 	i = -1;
+	printf("allocations mémoire OK\n");
 	while (++i < law.philo_number)
 	{
 		secure = pthread_create(&phils[i], NULL, philo_handler, forks);
@@ -67,6 +72,10 @@ int	philo(law law)
 		forks = forks->next;
 	}
 	while (--i >= 0)
-		pthread_join(phils[i], NULL);
+	{
+		secure = pthread_join(phils[i], NULL);
+		if (secure)
+			return (secure);
+	}
 	return (0);
 }

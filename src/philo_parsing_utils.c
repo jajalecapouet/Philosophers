@@ -6,7 +6,7 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:09:57 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/04 16:58:15 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/07 15:51:01 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ int	parsing_fill(char **to_parse, law *to_fill)
 			return (22);
 	}
 	to_fill->philo_number = ft_atoi(to_parse[0]);
-	to_fill->time_to_die = ft_atoi(to_parse[1]);
-	to_fill->time_to_sleep = ft_atoi(to_parse[2]);
-	to_fill->eat_number = ft_atoi(to_parse[3]);
+	to_fill->time_to_die = ft_atoi(to_parse[1]) * 1000;
+	to_fill->time_to_eat = ft_atoi(to_parse[2]) * 1000;
+	to_fill->time_to_sleep = ft_atoi(to_parse[3]) * 1000;
+	to_fill->eat_number = ft_atoi(to_parse[4]);
 	to_fill->all_alive = 1;
 	return (0);
 }

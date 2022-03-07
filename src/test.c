@@ -5,7 +5,8 @@ void	*pouet(void *i)
 	
 	int	a;
 
-	pthread_mutex_lock(&(((fromage *)i)->mut));
+	if (pthread_mutex_lock(&(((fromage *)i)->mut)) == 36)
+		write(1, "interblocage\n", 14);
 	printf("\nsalut, je suis un thread et mon pid.pit est : %d.%d\n", getpid(), (int)pthread_self());
 	a = 0;
 	while (a < 100000)
@@ -52,6 +53,6 @@ int	main(void)
 	free(camembert.adr);
 	printf("après la fin des threads, i vaut %d\n", camembert.value);
 	gettimeofday(&t2, NULL);
-	afficher_temps_us(t1, t2);
+	//afficher_temps_us(t1, t2);
 	return (0);
 }

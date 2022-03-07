@@ -6,33 +6,31 @@
 /*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 10:53:32 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/04 16:59:46 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/03/07 17:48:57 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	afficher_temps_ms(struct timeval t1, struct timeval t2)
+int	ms(struct timeval t1, struct timeval t2)
 {
 	int	temps_ms;
 
 	temps_ms = (t2.tv_sec - t1.tv_sec) * 1000;
 	temps_ms += (t2.tv_usec - t1.tv_usec) / 1000;
-	printf("temps écoulé : %d ms\n", temps_ms);
 	return (temps_ms);
 }
 
-int	afficher_temps_us(struct timeval t1, struct timeval t2)
+int	us(struct timeval t1, struct timeval t2)
 {
 	int	temps_us;
 
 	temps_us = (t2.tv_sec - t1.tv_sec) * 1000000;
 	temps_us += (t2.tv_usec - t1.tv_usec);
-	printf("temps écoulé : %d us\n", temps_us);
 	return (temps_us);
 }
 
-int	insert_mutex(fork_lst *lst, law *law)
+int	insert_mutex_law(fork_lst *lst, law *law)
 {
 	int				boucle;
 	int				secure;
@@ -42,7 +40,7 @@ int	insert_mutex(fork_lst *lst, law *law)
 	secure = -1;
 	boucle = 0;
 	first = lst;
-	while (!(boucle && first == lst) && ++secure >= 0)
+	while (!(boucle++ && first == lst) && ++secure >= 0)
 	{
 		if (pthread_mutex_init(&mutex, NULL))
 		{
@@ -88,22 +86,30 @@ int	crea_forks_phils(fork_lst **forks, pthread_t **phils, int nb, law *law)
 
 void	*philo_handler(void *arg)
 {
-	struct timeval	last_eat;
-	struct timeval	current;
-	fork_lst		*fork;
+	t_time		tps;
+	fork_lst	*fork;
+	int			think;
+	int			dididie;
 
+	think = 0;
+	dididie = 0;
 	fork = (fork_lst *)arg;
-	gettimeofday(&last_eat, NULL);
-	while ("fork->law->all_alive && !mort de faim")
+	init_time(&tps);
+	while (fork->law->all_alive && dididie <= fork->law->time_to_die)
 	{
-		if (fork)
-		pthread_mutex_lock(&fork->mutex);
-
-		pthread_mutex_unlock(&fork->mutex);
+		if (fork->enable && fork->next->enable)
+		{
+			think = je_mange(fork, fork->next, &tps);
+			je_dors(fork, &tps);
+		}
+		else 
+				think = je_pense(fork->nb, &tps, think);
+		dididie = us(tps.last_eat, tps.current);
 	}
-	if ("RIP")
+	if (dididie >= fork->law->time_to_die)
 	{
-		write(1, "RIP\n", 4);
+		keskifou(&tps, fork->nb, ROUGE"died\n"NORMAL);
 		fork->law->all_alive = 0;
 	}
+	return (NULL);
 }
