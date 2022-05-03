@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: njaros <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/03 10:44:06 by njaros            #+#    #+#              #
-#    Updated: 2022/03/07 16:29:12 by njaros           ###   ########lyon.fr    #
+#    Updated: 2022/05/03 19:15:30 by njaros           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = gcc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -fsanitize=thread
 
 PATH_SRCS = src
 PATH_OBJS = obj
@@ -20,6 +20,7 @@ PATH_INCLUDES = includes
 
 LST_SRCS =	philo.c \
 			philo_parsing_utils.c \
+			time_utils.c \
 			philo_utils.c \
 			philo_utils2.c \
 			philo_utils3.c \
