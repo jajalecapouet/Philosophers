@@ -12,7 +12,7 @@
 
 NAME = philo
 CC = gcc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -pthread
 
 PATH_SRCS = src
 PATH_OBJS = obj
