@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_parsing_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:09:57 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/07 15:51:01 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/05/03 19:27:08 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,31 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-int	parsing_fill(char **to_parse, law *to_fill)
+int	init_mutex_law(law *to_fill)
 {
 	int	i;
+
+	i = pthread_mutex_init(&to_fill->rip_mut, NULL);
+	if (i)
+		return (i);
+	i = pthread_mutex_init(&to_fill->finish, NULL);
+	if (i)
+		return (i);
+	i = pthread_mutex_init(&to_fill->ready, NULL);
+	if (i)
+		return (i);
+	i = pthread_mutex_init(&to_fill->write, NULL);
+	if (i)
+		return (i);
+	i = pthread_mutex_init(&to_fill->read, NULL);
+	if (i)
+		return (i);
+	return (0);
+}
+
+int	parsing_fill(char **to_parse, law *to_fill)
+{
+	int		i;
 
 	i = -1;
 	while (to_parse[++i])
@@ -57,10 +79,18 @@ int	parsing_fill(char **to_parse, law *to_fill)
 			return (22);
 	}
 	to_fill->philo_number = ft_atoi(to_parse[0]);
+	to_fill->usleep_val = to_fill->philo_number * 25;
 	to_fill->time_to_die = ft_atoi(to_parse[1]) * 1000;
 	to_fill->time_to_eat = ft_atoi(to_parse[2]) * 1000;
 	to_fill->time_to_sleep = ft_atoi(to_parse[3]) * 1000;
-	to_fill->eat_number = ft_atoi(to_parse[4]);
+	to_fill->eat_number = 0;
+	if (to_parse[4])
+		to_fill->eat_number += ft_atoi(to_parse[4]);
 	to_fill->all_alive = 1;
+	to_fill->ready_count = 0;
+	to_fill->start.tv_sec = 0;
+	i = init_mutex_law(to_fill);
+	if (i)
+		return (i);
 	return (0);
 }
