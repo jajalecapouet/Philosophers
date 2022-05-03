@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:01:30 by njaros            #+#    #+#             */
-/*   Updated: 2022/03/07 16:37:37 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/05/03 19:10:20 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 int	error(int err)
 {
-	if (err == 0)
+	/*if (err == 0)
 	{
 		write(1, "Bon déroulement du processus\n", 31);
 		write(1, "En esperant qu'il n'y a pas eu trop de mort...\n", 48);
-	}
+	}*/
 	if (err == 1)
 		write(2, "Opération non autorisée\n", 27);
 	if (err == 3)
 		write(2, "Aucun processus de ce type\n", 28);
 	if (err == 5)
 		write(2, "Erreur d'E/S\n", 13);
-	if (err == 11)
+	if (err == 11 || err == 12)
 		write(2, "Erreur mémoire\n", 16);
 	if (err == 22)
 		write(2, "Argument(s) non valide\n", 24);
@@ -36,11 +36,11 @@ int	error(int err)
 
 int	main(int ac, char **av)
 {
-	struct law	law;
-	int			err;
+	struct law		law;
+	int				err;
 
 	err = 0;
-	if (ac != 6)
+	if (ac < 5)
 		return (error(5));
 	err = parsing_fill(&av[1], &law);
 	if (err)
@@ -50,16 +50,15 @@ int	main(int ac, char **av)
 
 int	philo(law law)
 {
-	int			i;
-	int			secure;
-	pthread_t	*phils;
-	fork_lst	*forks;
+	int				i;
+	int				secure;
+	pthread_t		*phils;
+	fork_lst		*forks;
 
 	secure = crea_forks_phils(&forks, &phils, law.philo_number, &law);
 	if (secure)
 		return (freeteuse(secure, forks, phils));
 	i = -1;
-	printf("allocations mémoire OK\n");
 	while (++i < law.philo_number)
 	{
 		secure = pthread_create(&phils[i], NULL, philo_handler, forks);
@@ -73,9 +72,8 @@ int	philo(law law)
 	}
 	while (--i >= 0)
 	{
-		secure = pthread_join(phils[i], NULL);
-		if (secure)
-			return (secure);
+		pthread_join(phils[i], NULL);
+		pthread_detach(phils[i]);
 	}
-	return (0);
+	return (freeteuse(0, forks, phils));
 }
