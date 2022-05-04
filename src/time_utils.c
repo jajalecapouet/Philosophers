@@ -49,19 +49,18 @@ void	init_time(t_time *tps, struct timeval start)
 	gettimeofday(&tps->current, NULL);
 	gettimeofday(&tps->last_eat, NULL);
 	tps->start = start;
-	tps->nbr_eat = 0;
 }
 
-void	usleep_tricks(law *law, int time)
+void	usleep_tricks(fork_lst *fork, int time)
 {
 	struct timeval	t1;
 	struct timeval	t2;
 
 	gettimeofday(&t1, NULL);
 	gettimeofday(&t2, NULL);
-	while (us(t1, t2) < time && law->philo_number && law->all_alive)
+	while (us(t1, t2) < time && val_read_law(fork->law, 3))
 	{
-		usleep(law->usleep_val);
+		usleep(fork->usleep_val);
 		gettimeofday(&t2, NULL);
 	}
 }

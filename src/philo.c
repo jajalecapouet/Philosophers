@@ -14,11 +14,6 @@
 
 int	error(int err)
 {
-	/*if (err == 0)
-	{
-		write(1, "Bon déroulement du processus\n", 31);
-		write(1, "En esperant qu'il n'y a pas eu trop de mort...\n", 48);
-	}*/
 	if (err == 1)
 		write(2, "Opération non autorisée\n", 27);
 	if (err == 3)
@@ -40,7 +35,7 @@ int	main(int ac, char **av)
 	int				err;
 
 	err = 0;
-	if (ac < 5)
+	if (ac < 5 || ac > 6)
 		return (error(5));
 	err = parsing_fill(&av[1], &law);
 	if (err)
@@ -57,7 +52,7 @@ int	philo(law law)
 
 	secure = crea_forks_phils(&forks, &phils, law.philo_number, &law);
 	if (secure)
-		return (freeteuse(secure, forks, phils));
+		return (freeteuse(secure, forks, phils, 0));
 	i = -1;
 	while (++i < law.philo_number)
 	{
@@ -75,5 +70,5 @@ int	philo(law law)
 		pthread_join(phils[i], NULL);
 		pthread_detach(phils[i]);
 	}
-	return (freeteuse(0, forks, phils));
+	return (freeteuse(0, forks, phils, 1));
 }

@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	forks_clear(fork_lst *lst)
+void	forks_clear(fork_lst *lst, int context)
 {
 	fork_lst	*first;
 	fork_lst	*temp;
@@ -25,13 +25,22 @@ void	forks_clear(fork_lst *lst)
 		boucle = 1;
 		temp = lst;
 		lst = lst->next;
+		if (context)
+			pthread_mutex_destroy(&lst->mutex);
 		free(temp);
 	}
 }
 
-int	freeteuse(int err, fork_lst *lst, pthread_t *phils)
+void	destroy_mutex(law *law)
+{
+	pthread_mutex_destroy(&law->mutex_law);
+	pthread_mutex_destroy(&law->write);
+}
+
+int	freeteuse(int err, fork_lst *lst, pthread_t *phils, int context)
 {
 	free(phils);
-	forks_clear(lst);
+	destroy_mutex(lst->law);
+	forks_clear(lst, context);
 	return (err);
 }

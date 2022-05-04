@@ -15,12 +15,10 @@
 void	je_dors(fork_lst *fork, t_time *tps)
 {
 	keskifou(tps, fork->nb, "is sleeping\n", fork->law);
-	if (fork->law->time_to_die > fork->law->time_to_sleep)
-		//usleep(fork->law->time_to_sleep);
-		usleep_tricks(fork->law, fork->law->time_to_sleep);
+	if (fork->ttd > fork->tts + fork->tte)
+		usleep_tricks(fork, fork->tts);
 	else
-		//usleep(fork->law->time_to_die);
-		usleep_tricks(fork->law, fork->law->time_to_die);
+		usleep_tricks(fork, fork->ttd);
 }
 
 int	je_pense(int philo, t_time *tps, int think, law *law)

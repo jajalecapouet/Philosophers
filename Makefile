@@ -12,11 +12,7 @@
 
 NAME = philo
 CC = gcc
-<<<<<<< HEAD
-FLAGS = -Wall -Wextra -Werror -pthread
-=======
-FLAGS = -Wall -Wextra -Werror -fsanitize=thread
->>>>>>> 7f27015954559e6f1d0a7d2af017d27199126d19
+FLAGS = -Wall -Wextra -Werror
 
 PATH_SRCS = src
 PATH_OBJS = obj
@@ -25,6 +21,7 @@ PATH_INCLUDES = includes
 LST_SRCS =	philo.c \
 			philo_parsing_utils.c \
 			time_utils.c \
+			mutex_utils.c \
 			philo_utils.c \
 			philo_utils2.c \
 			philo_utils3.c \
@@ -39,7 +36,7 @@ INCLUDES =	$(addprefix ${PATH_INCLUDES}/,${LST_INCLUDES})
 all :				${NAME} Makefile
 
 ${NAME} :			${OBJS}
-					${CC} ${FLAGS} ${OBJS} -o $@
+					${CC} -pthread ${FLAGS} ${OBJS} -o $@
 
 ${PATH_OBJS}/%.o:	${PATH_SRCS}/%.c ${INCLUDES} Makefile | ${PATH_OBJS}
 					${CC} ${FLAGS} -c $< -o $@ -I ${PATH_INCLUDES}
