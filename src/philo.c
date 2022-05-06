@@ -31,8 +31,8 @@ int	error(int err)
 
 int	main(int ac, char **av)
 {
-	struct law		law;
-	int				err;
+	struct law	law;
+	int			err;
 
 	err = 0;
 	if (ac < 5 || ac > 6)
