@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 13:53:44 by njaros            #+#    #+#             */
-/*   Updated: 2022/05/03 18:06:12 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/05/06 09:32:13 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	us(struct timeval t1, struct timeval t2)
 	return (temps_us);
 }
 
-int	keskifou(t_time *tps, int philo, char *str, law *law)
+int	keskifou(t_time *tps, int philo, char *str, t_law *law)
 {
 	int	time;
 
@@ -51,7 +51,7 @@ void	init_time(t_time *tps, struct timeval start)
 	tps->start = start;
 }
 
-void	usleep_tricks(fork_lst *fork, int time)
+void	usleep_tricks(t_fork_lst *fork, int time)
 {
 	struct timeval	t1;
 	struct timeval	t2;

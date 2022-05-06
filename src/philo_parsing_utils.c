@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:09:57 by njaros            #+#    #+#             */
-/*   Updated: 2022/05/03 19:27:08 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/05/06 09:31:51 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-int	init_mutex_law(law *to_fill)
+int	init_mutex_law(t_law *to_fill)
 {
 	int	i;
 
@@ -59,7 +59,7 @@ int	init_mutex_law(law *to_fill)
 	return (0);
 }
 
-int	parsing_fill(char **to_parse, law *to_fill)
+int	parsing_fill(char **to_parse, t_law *to_fill)
 {
 	int		i;
 

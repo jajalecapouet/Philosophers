@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:01:30 by njaros            #+#    #+#             */
-/*   Updated: 2022/05/03 19:10:20 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/05/06 09:44:46 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	error(int err)
 
 int	main(int ac, char **av)
 {
-	struct law	law;
-	int			err;
+	t_law	law;
+	int		err;
 
 	err = 0;
 	if (ac < 5 || ac > 6)
@@ -40,21 +40,23 @@ int	main(int ac, char **av)
 	err = parsing_fill(&av[1], &law);
 	if (err)
 		return (error(err));
-	return (error(philo(law)));
+	if (!law.philo_number)
+		return (0);
+	return (error(philo(law, law.philo_number)));
 }
 
-int	philo(law law)
+int	philo(t_law law, int nb_philo)
 {
 	int				i;
 	int				secure;
 	pthread_t		*phils;
-	fork_lst		*forks;
+	t_fork_lst		*forks;
 
-	secure = crea_forks_phils(&forks, &phils, law.philo_number, &law);
+	secure = c(&forks, &phils, law.philo_number, &law);
 	if (secure)
 		return (freeteuse(secure, forks, phils, 0));
 	i = -1;
-	while (++i < law.philo_number)
+	while (++i < nb_philo)
 	{
 		secure = pthread_create(&phils[i], NULL, philo_handler, forks);
 		if (secure)
@@ -65,10 +67,7 @@ int	philo(law law)
 		}
 		forks = forks->next;
 	}
-	while (--i >= 0)
-	{
-		pthread_join(phils[i], NULL);
+	while (--i >= 0 && !pthread_join(phils[i], NULL))
 		pthread_detach(phils[i]);
-	}
 	return (freeteuse(0, forks, phils, 1));
 }
