@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:09:57 by njaros            #+#    #+#             */
-/*   Updated: 2022/05/06 09:31:51 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/05/06 15:32:20 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ int	parsing_fill(char **to_parse, t_law *to_fill)
 	to_fill->time_to_die = ft_atoi(to_parse[1]) * 1000;
 	to_fill->time_to_eat = ft_atoi(to_parse[2]) * 1000;
 	to_fill->time_to_sleep = ft_atoi(to_parse[3]) * 1000;
-	to_fill->eat_number = 0;
+	to_fill->eat_number = -1;
 	if (to_parse[4])
-		to_fill->eat_number += ft_atoi(to_parse[4]);
+		to_fill->eat_number = ft_atoi(to_parse[4]);
 	to_fill->all_alive = 1;
 	to_fill->ready_count = 0;
 	to_fill->start.tv_sec = 0;

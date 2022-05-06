@@ -6,7 +6,7 @@
 /*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 11:01:30 by njaros            #+#    #+#             */
-/*   Updated: 2022/05/06 09:44:46 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/05/06 15:31:53 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int ac, char **av)
 	err = parsing_fill(&av[1], &law);
 	if (err)
 		return (error(err));
-	if (!law.philo_number)
+	if (!law.philo_number || !law.eat_number)
 		return (0);
 	return (error(philo(law, law.philo_number)));
 }
