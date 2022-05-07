@@ -17,8 +17,8 @@ void	je_dors(t_fork_lst *fork, t_time *tps)
 	keskifou(tps, fork->nb, "is sleeping\n", fork->law);
 	if (fork->ttd > fork->tts + fork->tte)
 		usleep_tricks(fork, fork->tts);
-	else
-		usleep_tricks(fork, fork->ttd);
+	else if (fork->tte < fork->ttd)
+		usleep_tricks(fork, fork->ttd - fork->tte);
 	gettimeofday(&tps->current, NULL);
 }
 
